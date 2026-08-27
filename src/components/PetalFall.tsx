@@ -29,7 +29,7 @@ export function PetalFall({ count = 26 }: { count?: number }) {
         delay: (i % 13) * 1.1,
         duration: 11 + ((i * 7) % 9),
         size: 9 + ((i * 5) % 10),
-        hue: HUES[i % HUES.length],
+        hue: HUES[i % HUES.length]!,
         drift: ((i % 5) - 2) * 40,
         rotate: (i * 47) % 360,
       })),

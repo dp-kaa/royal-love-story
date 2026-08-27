@@ -85,10 +85,14 @@ export function ScratchReveal({
             onMouseMove={(e) => drawing.current && scratch(e.clientX, e.clientY)}
             onMouseUp={() => (drawing.current = false)}
             onMouseLeave={() => (drawing.current = false)}
-            onTouchStart={(e) => scratch(e.touches[0].clientX, e.touches[0].clientY)}
+            onTouchStart={(e) => {
+              const t = e.touches[0];
+              if (t) scratch(t.clientX, t.clientY);
+            }}
             onTouchMove={(e) => {
               e.preventDefault();
-              scratch(e.touches[0].clientX, e.touches[0].clientY);
+              const t = e.touches[0];
+              if (t) scratch(t.clientX, t.clientY);
             }}
           />
         )}
