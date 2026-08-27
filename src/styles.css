@@ -479,3 +479,176 @@
   }
 }
 
+/* ---------- Per-event ceremony themes ---------- */
+
+.event-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.event-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.14;
+  background: var(--event-glow);
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+.event-card:hover::before {
+  opacity: 0.22;
+}
+
+.event-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.event-card:hover {
+  transform: translateY(-6px);
+}
+
+/* Mehndi — twilight emerald & henna */
+.event-card--mehndi {
+  --event-glow: radial-gradient(circle at 18% 20%, oklch(0.55 0.14 165), transparent 55%),
+    radial-gradient(circle at 82% 80%, oklch(0.4 0.1 160), transparent 50%);
+  border-color: color-mix(in oklab, oklch(0.55 0.14 165) 50%, transparent);
+  box-shadow: 0 24px 60px -38px oklch(0.3 0.12 160 / 0.5);
+}
+.event-card--mehndi .date-numeral {
+  color: oklch(0.4 0.13 160);
+}
+
+/* Haldi — golden daytime warmth */
+.event-card--haldi {
+  --event-glow: radial-gradient(circle at 20% 18%, oklch(0.82 0.16 75), transparent 55%),
+    radial-gradient(circle at 80% 82%, oklch(0.75 0.18 55), transparent 50%);
+  border-color: color-mix(in oklab, oklch(0.78 0.17 62) 55%, transparent);
+  box-shadow: 0 24px 60px -38px oklch(0.6 0.16 55 / 0.45);
+}
+.event-card--haldi .date-numeral {
+  color: oklch(0.55 0.15 50);
+}
+
+/* Sangeet — electric night-party magenta */
+.event-card--sangeet {
+  --event-glow: radial-gradient(circle at 15% 25%, oklch(0.62 0.24 340), transparent 55%),
+    radial-gradient(circle at 85% 75%, oklch(0.5 0.22 295), transparent 50%);
+  border-color: color-mix(in oklab, oklch(0.62 0.24 340) 50%, transparent);
+  box-shadow: 0 24px 60px -38px oklch(0.4 0.2 330 / 0.5);
+}
+.event-card--sangeet .date-numeral {
+  color: oklch(0.48 0.22 335);
+}
+
+/* Wedding — royal maroon & gold */
+.event-card--wedding {
+  --event-glow: radial-gradient(circle at 18% 22%, oklch(0.42 0.16 20), transparent 55%),
+    radial-gradient(circle at 82% 78%, oklch(0.68 0.12 80), transparent 48%);
+  border-color: color-mix(in oklab, var(--gold) 50%, transparent);
+  box-shadow: 0 24px 60px -36px oklch(0.25 0.12 18 / 0.55);
+}
+
+.event-vibe {
+  display: inline-block;
+  border-radius: 9999px;
+  padding: 0.4rem 1rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  border: 1px dashed color-mix(in oklab, var(--gold) 45%, transparent);
+}
+
+/* ---------- Scroll-driven sun → moon ---------- */
+
+.scroll-lume {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 3.5rem;
+  z-index: 35;
+  pointer-events: none;
+}
+
+.scroll-lume-track {
+  position: absolute;
+  left: 50%;
+  top: 5vh;
+  bottom: 5vh;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, oklch(0.78 0.16 65) 60%, transparent),
+    color-mix(in oklab, oklch(0.6 0.2 340) 40%, transparent),
+    color-mix(in oklab, oklch(0.45 0.1 250) 50%, transparent)
+  );
+  opacity: 0.35;
+  border-radius: 9999px;
+}
+
+.scroll-lume-orb {
+  position: absolute;
+  left: 50%;
+  top: 5vh;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-left: -1.375rem;
+  transform: translateY(calc(var(--scroll-progress, 0) * 90vh));
+  transition: transform 0.1s linear;
+}
+
+.scroll-lume-sun,
+.scroll-lume-moon {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0.3rem;
+  border-radius: 9999px;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.scroll-lume-sun {
+  color: oklch(0.75 0.16 65);
+  background: radial-gradient(circle, oklch(0.82 0.16 65 / 0.25), transparent 70%);
+  opacity: calc(1 - var(--scroll-progress, 0));
+  transform: scale(calc(1 - var(--scroll-progress, 0) * 0.3)) rotate(calc(var(--scroll-progress, 0) * 180deg));
+}
+
+.scroll-lume-moon {
+  color: oklch(0.7 0.08 250);
+  background: radial-gradient(circle, oklch(0.6 0.1 250 / 0.3), transparent 70%);
+  opacity: var(--scroll-progress, 0);
+  transform: scale(calc(0.7 + var(--scroll-progress, 0) * 0.3)) rotate(calc(var(--scroll-progress, 0) * -180deg));
+}
+
+@media (max-width: 640px) {
+  .scroll-lume {
+    width: 2.25rem;
+  }
+  .scroll-lume-orb {
+    width: 2rem;
+    height: 2rem;
+    margin-left: -1rem;
+  }
+  .scroll-lume-track {
+    top: 8vh;
+    bottom: 8vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-lume-orb {
+    transition: none;
+  }
+  .event-card:hover {
+    transform: none;
+  }
+}
+

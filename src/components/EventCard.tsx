@@ -1,5 +1,3 @@
-import { MapPin } from "lucide-react";
-
 export const VENUE_NAME = "Mangozzz Magical World — A Riverside Resort, Karjat";
 export const VENUE_ADDRESS =
   "At post Asarewadi, near Aaibaba Foundation, Chauk, Khalapur, Aasare, Maharashtra 410207";
@@ -9,6 +7,7 @@ export type EventInfo = {
   eyebrow: string;
   title: string;
   blurb: string;
+  theme: "mehndi" | "haldi" | "sangeet" | "wedding";
   day: string;
   date: string;
   month: string;
@@ -19,7 +18,7 @@ export type EventInfo = {
 
 export function EventCard({ event, index }: { event: EventInfo; index: number }) {
   return (
-    <article className="event-card">
+    <article className={`event-card event-card--${event.theme}`}>
       <div className="event-card-copy">
         <p className="text-[0.65rem] tracking-[0.4em] text-gold uppercase">{event.eyebrow}</p>
         <h3 className="mt-3 font-display text-4xl text-primary sm:text-5xl">{event.title}</h3>
@@ -32,17 +31,10 @@ export function EventCard({ event, index }: { event: EventInfo; index: number })
         </div>
 
         <p className="mt-4 text-sm font-medium text-foreground">{event.time}</p>
-        <p className="mt-3 text-sm text-muted-foreground">
-          <span className="block font-medium text-foreground">{VENUE_NAME}</span>
-          {VENUE_ADDRESS}
-        </p>
 
         <div className="mt-5 flex flex-wrap items-center gap-3">
           <span className="dress-chip">{event.dress}</span>
-          <a href={MAP_URL} target="_blank" rel="noreferrer" className="btn-gold">
-            <MapPin className="h-4 w-4" aria-hidden="true" />
-            Get directions
-          </a>
+          <span className="event-vibe">Swipe in for the vibe</span>
         </div>
       </div>
 

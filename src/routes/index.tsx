@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { MapPin, Heart, Clock } from "lucide-react";
+import { useEffect, useState, type CSSProperties } from "react";
+import { MapPin, Heart, Clock, Moon, Sun } from "lucide-react";
 
 import { PetalFall } from "@/components/PetalFall";
 import { EnvelopeGate } from "@/components/EnvelopeGate";
@@ -13,9 +13,9 @@ import haldiImg from "@/assets/haldi.jpg";
 import sangeetImg from "@/assets/sangeet.jpg";
 import weddingImg from "@/assets/wedding.jpg";
 
-const TITLE = "Aarav & Riya — Royal Indian Wedding Invitation";
+const TITLE = "Vinita & Vinit — Royal Indian Wedding Invitation";
 const DESCRIPTION =
-  "Join Aarav & Riya for Mehndi, Haldi, Engagement & Sangeet, and the Wedding on 12 December 2026 at Mangozzz Magical World, Karjat.";
+  "Join Vinita & Vinit for Mehndi, Haldi, Engagement & Sangeet, and the Wedding on 12 December 2026 at Mangozzz Magical World, Karjat.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,6 +37,7 @@ const EVENTS: EventInfo[] = [
     title: "Mehndi",
     blurb:
       "An afternoon of intricate henna, dholak beats and endless sweets as the celebrations begin.",
+    theme: "mehndi",
     day: "Thursday",
     date: "10",
     month: "December 2026",
@@ -49,6 +50,7 @@ const EVENTS: EventInfo[] = [
     title: "Haldi",
     blurb:
       "Blessings of haldi and marigolds, showered by everyone who has loved us since we were little.",
+    theme: "haldi",
     day: "Friday",
     date: "11",
     month: "December 2026",
@@ -61,6 +63,7 @@ const EVENTS: EventInfo[] = [
     title: "Engagement & Sangeet",
     blurb:
       "Rings exchanged under chandeliers, followed by a night of music, dance performances and dinner.",
+    theme: "sangeet",
     day: "Friday",
     date: "11",
     month: "December 2026",
@@ -73,6 +76,7 @@ const EVENTS: EventInfo[] = [
     title: "Jaimala & Wedding",
     blurb:
       "The garlands, the sacred fire, the seven vows — the moment we become family, forever.",
+    theme: "wedding",
     day: "Saturday",
     date: "12",
     month: "December 2026",
@@ -99,7 +103,18 @@ function useCountdown(target: string) {
 
 function Invitation() {
   const [opened, setOpened] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const countdown = useCountdown("2026-12-12T19:30:00+05:30");
+
+  useEffect(() => {
+    const updateProgress = () => {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(maxScroll > 0 ? Math.min(1, window.scrollY / maxScroll) : 0);
+    };
+    updateProgress();
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    return () => window.removeEventListener("scroll", updateProgress);
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = opened ? "" : "hidden";
@@ -112,6 +127,18 @@ function Invitation() {
     <>
       <PetalFall />
       <EnvelopeGate open={opened} onOpen={() => setOpened(true)} />
+
+      <div
+        className="scroll-lume"
+        style={{ "--scroll-progress": scrollProgress } as CSSProperties}
+        aria-hidden="true"
+      >
+        <div className="scroll-lume-track" />
+        <div className="scroll-lume-orb">
+          <Sun className="scroll-lume-sun" />
+          <Moon className="scroll-lume-moon" />
+        </div>
+      </div>
 
       <main className="relative mx-auto max-w-5xl px-4 pb-24 sm:px-6">
         {/* Hero */}
@@ -131,13 +158,12 @@ function Invitation() {
             Together with our families, we joyfully invite you to the wedding celebration of
           </p>
           <h1 className="mt-4 font-display text-5xl leading-tight text-primary sm:text-7xl">
-            Aarav
+            Vinita
             <span className="mx-3 align-middle text-2xl text-gold sm:text-3xl">&amp;</span>
-            Riya
+            Vinit
           </h1>
           <p className="mt-4 text-xs text-muted-foreground sm:text-sm">
-            S/o Sri Rajesh &amp; Smt. Meera Sharma &nbsp;·&nbsp; D/o Sri Vikram &amp; Smt. Anita
-            Kapoor
+            With the blessings of our families &nbsp;·&nbsp; A celebration of love, music and colour
           </p>
 
           <div className="divider-gold mt-10">
@@ -219,7 +245,7 @@ function Invitation() {
             width={816}
             height={816}
           />
-          <p className="mt-4 font-script text-3xl text-primary">With love, Aarav &amp; Riya</p>
+          <p className="mt-4 font-script text-3xl text-primary">With love, Vinita &amp; Vinit</p>
           <p className="mt-2 text-xs tracking-[0.3em] text-muted-foreground uppercase">
             Karjat · December 2026
           </p>
